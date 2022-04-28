@@ -11,10 +11,4 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         Instantiate(enemyObject, transform);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
