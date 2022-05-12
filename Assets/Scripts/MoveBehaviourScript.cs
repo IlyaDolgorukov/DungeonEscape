@@ -6,8 +6,14 @@ public class MoveBehaviourScript : MonoBehaviour
 {
     [SerializeField] float speed = 1;
     Vector3 movement;
-    
+
+    private InventoryController playerInventory;
     private bool isGrounded = true;
+
+    private void Awake()
+    {
+        playerInventory = GetComponent<InventoryController>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,6 +31,11 @@ public class MoveBehaviourScript : MonoBehaviour
             isGrounded = false;
             GetComponent<Rigidbody>().AddForce(Vector3.up * 100, ForceMode.Impulse);
         }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            DropGrenade();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,6 +43,17 @@ public class MoveBehaviourScript : MonoBehaviour
         if (other.gameObject.CompareTag("Floor"))
         {
             isGrounded = true;
+        }
+    }
+
+    private void DropGrenade()
+    {
+        var grenade = playerInventory.GetGrenade();
+
+        if (grenade != null)
+        {
+            grenade.GetComponent<GrenadeBehaviourScript>().DropGrenade(transform.forward);
+            playerInventory.DropGrenade();
         }
     }
 }
